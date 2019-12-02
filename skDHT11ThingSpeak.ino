@@ -7,8 +7,8 @@
 
 #define DHTPIN       2
 #define DHTTYPE      DHT11
-#define LED         0
-#define LEDERROR     D5
+#define LED          0
+#define LEDERROR     14
 
 const int timerSleep= 30* 60* 1000000; //30 minutos
 const int timerUpdate= 2 * 60 ; //30 minutos
@@ -28,8 +28,6 @@ Adafruit_BMP085 bmp;
 
 WiFiClient client;
 
-
-
 void setup() {
   // Initialize sensor
 
@@ -40,7 +38,7 @@ void setup() {
 
   pinMode(LED, OUTPUT);
   pinMode(LEDERROR,OUTPUT);
-  pinMode(D0, WAKEUP_PULLUP);
+  pinMode(16, WAKEUP_PULLUP);
 
 
   //  Connect to WiFi network
@@ -53,13 +51,17 @@ void setup() {
 
     if(++timeout > 100)
     {
+      
        Serial.println("Sin Conexion WIFI");
-       while (1) { digitalWrite(LED, HIGH);delay(100);digitalWrite(LED,LOW);delay(100);}
+       int a=25;
+       while (a--) { digitalWrite(LED, HIGH);delay(100);digitalWrite(LED,LOW);delay(100);}
+       Serial.println("Reset SW");
+       ESP.reset();
+       
     }
     
   }
 
-  
 
   dht.begin();
   if (!bmp.begin()) {
@@ -68,9 +70,6 @@ void setup() {
   }
   delay(1000);
 
-  
-
-  
   digitalWrite(LED, HIGH);
 
 /*
@@ -82,7 +81,7 @@ void setup() {
 */ 
   humidity    = dht.readHumidity();
   temperature = dht.readTemperature();
-  presion     = bmp.readPressure();
+  presion     = bmp.readPressure() ;  //
   
    if (client.connect(host, 80)) {
 
@@ -92,7 +91,7 @@ void setup() {
       body += "&field2=";
       body += String(humidity);
       body += "&field3=";
-      body += String(presion);
+      body += String(presion+881);
 
 
 
@@ -195,7 +194,3 @@ void TimingISR() {
   timer0_write(ESP.getCycleCount() + 80000000L); // 80MHz == 1sec
   
 }
-
-
-
-
