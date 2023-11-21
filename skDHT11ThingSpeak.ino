@@ -12,8 +12,8 @@
 
 const int timerSleep= 30* 60* 1000000; //30 minutos
 const int timerUpdate= 2 * 60 ; //30 minutos
-const char ssid[]     = "Wireless-N";
-const char password[] = "z123456z";
+const char ssid[]     = "xxxxxxxxx";
+const char password[] = "xxxxxxxxx";
 const char* host = "api.thingspeak.com";
 bool toggle = false;
 bool bActualiza = true;
